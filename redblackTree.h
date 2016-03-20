@@ -45,7 +45,7 @@ private:
 	void Delete_fixup(Node *pNode);
 	void LeftRotate(Node *pNode);
 	void RightRotate(Node *pNode);
-	void Swap(Node *pNode1, Node *pNode2);
+	void Transplant(Node *pNode1, Node *pNode2);
 	void Empty(Node *pNode);
 }
 

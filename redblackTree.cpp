@@ -14,11 +14,14 @@ rbTree::~rbTree() {
 }
 
 void rbTree::InitRoot() {
-	root = new Node(-1);
 	Nil = new Node(-1);
-	root->color = BLACK;
+	root = Nil;
 	Nil->color = BLACK;
 	root->parent = Nil;
+}
+
+int rbTree::getSize() {
+	return size;
 }
 
 void LeftRotate(Node *pNode) {
@@ -45,10 +48,152 @@ void LeftRotate(Node *pNode) {
 	}
 }
 
+void RightRotate(Node *pNode) {
+	Node *ParentNode = pNode->parent;
+	Node *LeftNode = pNode->left;
+	pNode->left = LeftNode->right;
+	LeftNode->right->parent = pNode;
+	LeftNode->right = pNode;
+	pNode->parent = LeftNode;
+
+	if(pNode == ParentNode->left) {
+		ParentNode->left = LeftNode;
+		LeftNode->parent = ParentNode;
+	}
+	else if(pNode == ParentNode->right) {
+		ParentNode->right = LeftNode;
+		LeftNode->parent = ParentNode;
+	}
+	else {
+		if(ParentNode == Nil) {
+			LeftNode->parent = Nil;
+			root = LeftNode;
+		}
+	}
+}
+
 bool rbTree::Insert(int k) {
 	Node *NewNode = new Node(k);
 	NewNode->left = Nil;
 	NewNode->right = Nil;
-	Node *RNode = root;
-	Node *NNode = Nil;
-	while
+	Node *pNode = root;
+	Node *pPreNode = Nil;
+	while(pNode != Nil) {
+		pPreNode = pNode;
+		if(k < pNode->key) {
+			pNode = pNode->left;
+		}
+		else if(k > pNode->key) {
+			pNode = pNode->right;
+		}
+		else {
+			delete NewNode;
+			return false;
+		}
+	}
+	NewNode->parent = pPreNode;
+	if(pPreNode == Nil) {
+		NewNode->color = BLACK;
+		root = NewNode;
+	}
+	else {
+		if(k < pPreNode->key){
+			pPreNode->left = NewNode;
+		}
+		else {
+			pPreNode->right = NewNode;
+		}
+	}
+	NewNode->left = Nil;
+	NewNode->right = Nil;
+	size++;
+	Insert_fixup(Newnode);
+	return true;
+}
+
+void rbTree::Insert_fixup(Node *pNode) {
+
+}
+
+/*bool rbTree::Delete(int k) {
+	Node *ChildNode;
+	Node *pNode, pPreNode;
+	if(root == Nil) {
+		return NULL;
+	}
+	pNode = Search(k);
+	if(pNode == NULL) {
+		return false;
+	}
+	pPreNode = pNode->parent;
+	if(pNode->left != Nil && pNode->right != Nil) {
+
+	}
+	else if(pNode->left == Nil && pNode->right == Nil) {
+		if(pPreNode == Nil) {
+			delete root;
+			root = Nil;
+			size--;
+			return true;
+		}
+		else {
+			if(pNode = pPreNode->left) {
+				pPreNode->left = Nil;
+			}
+			else {
+				pPreNode->right = Nil;
+			}
+			
+	}
+	
+}*/
+
+void rbTree::Delete_fixup(Node *pNode) {
+
+}
+
+/*void Transplant(Node *pNode1, Node *pNode2) {
+	if(pNode1->parent == Nil) {
+		root = pNode2;
+	}
+	else if(pNode1 == pNode1->parent->left) {
+		pNode1->parent->left = pNode2;
+	}
+	else {
+		pNode1->parent->right = pNode2;
+	}
+	pNode2->parent = pNode1->parent;
+}*/
+
+Node *Search(int k) {
+
+	Node *pNode;
+	if(root == Nil) {
+		return NULL;
+	}
+
+	pNode = root;
+	while(pNode != Nil) {
+		if(k < pNode->key) {
+			pNode = pNode->left;
+		}
+		else if(k > pNode->key) {
+			pNode = pNode->right;
+		}
+		else {
+			return pNode;
+		}
+	}
+
+	return NULL;
+}
+
+void rbTree::Empty(Node *pNode) {
+	if(pNode != Nil) {
+		Empty(pNode->right);
+		Empty(pNode->left);
+		delete pNode;
+	}
+}
+
+
