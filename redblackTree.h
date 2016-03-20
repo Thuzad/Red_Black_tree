@@ -35,6 +35,7 @@ private:
 public:
 	rbTree();
 	virtual ~rbTree();
+	void InitRoot();
 	bool Insert(int k);
 	bool Delete(int k);
 	Node *Search(int k);
