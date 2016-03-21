@@ -107,12 +107,51 @@ bool rbTree::Insert(int k) {
 	NewNode->left = Nil;
 	NewNode->right = Nil;
 	size++;
-	Insert_fixup(Newnode);
+	Insert_fixup(NewNode);
 	return true;
 }
 
 void rbTree::Insert_fixup(Node *pNode) {
-
+	Node *uncleNode = NULL;
+	while(pNode->parent->color == RED) {
+		if(pNode->parent == pNode->parent->parent->left){
+			uncleNode = pNode->parent->parent->right;
+			if(uncleNode->color == RED) {
+				pNode->parent->color = BLACK;
+				uncleNode->color = BLACK:
+				pNode->parent->parent->color = RED;
+				pNode = pNode->parent->parent;
+			}
+			else {
+				if(pNode == pNode->parent->right) {
+					pNode = pNode->parent;
+					LeftRotate(pNode);
+				}
+				pNode->parent->color = BLACK;
+				pNode->parent->parent->color = RED;
+				RightRotate(pNode->parent->parent);
+			}
+		}
+		else {
+			uncleNode = pNode->parent->parent->left;
+			if(uncleNode->color == RED) {
+				pNode->parent->color = BLACK;
+				uncleNode->color = BLACK;
+				pNode->parent->parent->color = RED;
+				pNode = pNode->parent->parent;
+			}
+			else {
+				if(pNode == pNode->parent->left) {
+					pNode = pNode->parent;
+					RightRotate(pNode);
+				}
+				pNode->parent->color = BLACK;
+				pNode->parent->parent->color = RED;
+				LeftRotate(pNode->parent->parent);
+			}
+		}
+	}
+	root->color = BLACK;
 }
 
 /*bool rbTree::Delete(int k) {
