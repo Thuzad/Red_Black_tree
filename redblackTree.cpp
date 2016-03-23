@@ -154,11 +154,12 @@ void rbTree::Insert_fixup(Node *pNode) {
 	root->color = BLACK;
 }
 
-/*bool rbTree::Delete(int k) {
+bool rbTree::Delete(int k) {
+	Node *pTemp;
 	Node *ChildNode;
 	Node *pNode, pPreNode;
 	if(root == Nil) {
-		return NULL;
+		return false;
 	}
 	pNode = Search(k);
 	if(pNode == NULL) {
@@ -166,7 +167,19 @@ void rbTree::Insert_fixup(Node *pNode) {
 	}
 	pPreNode = pNode->parent;
 	if(pNode->left != Nil && pNode->right != Nil) {
-
+		pTemp = pNode->left;
+		while(pTemp->right != Nil) {
+			pTemp = pTemp->right;
+		}
+		//swap
+		pNode = pTemp->left;
+		pNode->parent = pTemp->parent;
+		if(pTemp->parent->left == pTemp){
+			pTemp->parent->left = pNode;
+		}
+		else {
+			pTemp->parent->right = pNode;
+		}
 	}
 	else if(pNode->left == Nil && pNode->right == Nil) {
 		if(pPreNode == Nil) {
@@ -182,10 +195,36 @@ void rbTree::Insert_fixup(Node *pNode) {
 			else {
 				pPreNode->right = Nil;
 			}
-			
+			ChildNode = Nil;
+			ChildNode->parent = pPreNode;
+			pTemp = pNode;
+		}	
 	}
+	else {
+		if(pNode->left != Nil) {
+			ChildNode = pNode->left;
+			ChildNode->parent = pPreNode;
+		}
+		else {
+			ChildNode = pNode->right;
+			ChildNode->parent = pPreNode;
+		}
+		if(pNode == pPreNode->left) {
+			pPreNode->left = ChildNode;
+		}
+		else {
+			pPreNode->right = ChildNode;
+		}
+		pTemp = pNode;
+	}
+	if(pTemp->color == BLACK) {
+		Delete_fixup(ChildNode);
+	}
+	delete pTemp;
+	size--;
+	return true;
 	
-}*/
+}
 
 void rbTree::Delete_fixup(Node *pNode) {
 
