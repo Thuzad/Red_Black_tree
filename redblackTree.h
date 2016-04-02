@@ -1,13 +1,7 @@
-#ifdef REDBLACKTREE_H
+#ifndef REDBLACKTREE_H
 #define REDBLACKTREE_H
 
 #include<iostream>
-#include<vector>
-#include<string>
-#include<cstdlib>
-#include<cstdio>
-#include<cassert>
-#include"MACRO.h"
 using namespace std;
 
 #define RED 1
@@ -19,13 +13,13 @@ typedef struct Node {
 	struct Node *parent, *left, *right;
 	Node(){}
 	Node(int i){
-	   key = i;
-	   color = RED;
-	   parent = NULL;
-	   left = NULL;
-	   right = NULL;
+		key = i;
+		color = RED;
+		parent = NULL;
+		left = NULL;
+		right = NULL;
 	}
-}rbNode;
+}Node;
 
 class rbTree {
 private:
@@ -45,9 +39,9 @@ private:
 	void Delete_fixup(Node *pNode);
 	void LeftRotate(Node *pNode);
 	void RightRotate(Node *pNode);
-	void Transplant(Node *pNode1, Node *pNode2);
+	void Swap(Node *pNode1, Node *pNode2);
 	void Empty(Node *pNode);
-}
+};
 
 
 #endif
